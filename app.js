@@ -4,9 +4,15 @@
  */
 
 var http = require('http'),
+    utils = require('./utils'),
     express = require('express');
+    winston = require('winston');
 
 var app = express();
+
+/**
+ * Configure express app
+ */
 
 app.configure(function() {
   app.set('port', process.env.DEPLOY_PORT || 3000);
@@ -16,11 +22,29 @@ app.configure(function() {
 });
 
 /**
+ * Configure winston logging
+ */
+
+winston.add(winston.transports.File, {filename: 'builds.log'});
+       //.remove(winston.transports.Console);
+
+/**
  * Github endpoint
  */
 
 app.post('/gh/:repo', function(req, res) {
+  console.log(req.body);
+  var payload = req.body.payload || {},
+      details = payload.repository || {},
+      repo = details.url.replace(/^https?:\/\/github.com\//, ''),
+      uri = 'git@github.com:' + repo + '.git';
 
+  if(!payload || !details) return res.send(400);
+  res.send(204); // Go ahead and fire back a 204 status
+
+  utils.cloneRepo(uri, function(status) {
+    console.log(utils.language(repo.language, params.repo));
+  });
 });
 
 /**

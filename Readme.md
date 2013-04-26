@@ -6,6 +6,8 @@ A git hook server that builds a release and deploys it to production.
 
 ## Setup
 
+An ssh key must be present on the machine being used, since deployments could be private repositories.
+
 ## License (MIT)
 Copyright (c) 2013 TxSSC
 
