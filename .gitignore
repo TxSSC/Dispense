@@ -1,2 +1,4 @@
+repos/*/
+builds.log
 node_modules
 deployments.json
