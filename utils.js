@@ -7,11 +7,10 @@ var fs = require('fs'),
     exec = require('child_process').exec;
 
 /**
- * Expose `utils`
+ * Expose `deploy`
  */
 
-var utils = module.exports = exports;
-
+module.exports = exports = deploy;
 
 /**
  * Clone the git repo to `./repos`
@@ -20,7 +19,9 @@ var utils = module.exports = exports;
  * @param {Function} callback
  */
 
-utils.cloneRepo = function(uri, callback) {
+function deploy(obj) {
+  repo = details.url.replace(/^https?:\/\/github.com\//, ''),
+      uri = 'git@github.com:' + repo + '.git';
   exec('git clone ' + uri, {cwd: './repos'}, function(error, stdout, stderr) {
     if(error) {
       winston.log('error', error.message);
@@ -30,7 +31,7 @@ utils.cloneRepo = function(uri, callback) {
       return callback();
     }
   });
-};
+}
 
 /**
  * Return the language that belongs to the repository
@@ -38,11 +39,11 @@ utils.cloneRepo = function(uri, callback) {
  * @param {String} language
  */
 
-utils.language = function(language, repo) {
-  if(language) return language;
+function language(lang, repo) {
+  if(lang) return lang;
 
   var files = fs.readdirSync('./repos/' + repo);
   if(~files.indexOf('Gemfile')) return 'ruby';
   if(~files.indexOf('Gruntfile.js')) return 'static';
   if(~files.indexOf('package.json')) return 'javascript';
-};
+}

@@ -33,18 +33,11 @@ winston.add(winston.transports.File, {filename: 'builds.log'});
  */
 
 app.post('/gh/:repo', function(req, res) {
-  console.log(req.body);
-  var payload = req.body.payload || {},
-      details = payload.repository || {},
-      repo = details.url.replace(/^https?:\/\/github.com\//, ''),
-      uri = 'git@github.com:' + repo + '.git';
+  var payload = req.body.payload || {};
 
-  if(!payload || !details) return res.send(400);
+  if(!payload) return res.send(400);
   res.send(204); // Go ahead and fire back a 204 status
-
-  utils.cloneRepo(uri, function(status) {
-    console.log(utils.language(repo.language, params.repo));
-  });
+  utils.deploy(payload);
 });
 
 /**
