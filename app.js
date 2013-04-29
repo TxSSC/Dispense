@@ -32,19 +32,25 @@ winston.add(winston.transports.File, {filename: 'builds.log'});
  * Github endpoint
  */
 
-app.post('/gh/:repo', function(req, res) {
-  var payload = req.body.payload || {};
+app.post('/gh', function(req, res) {
+  var repo, data = req.body.payload;
+  if(!data || !data.repository) return res.send(400);
+  repo = {
+    name: data.repository.name,
+    url: data.repository.url,
+    commit: data.after
+  };
 
-  if(!payload) return res.send(400);
+  if(!utils.config.repos[repo.name]) return res.send(401);
   res.send(204); // Go ahead and fire back a 204 status
-  utils.deploy(payload);
+  utils.deploy(repo);
 });
 
 /**
  * Bitbucket endpoint
  */
 
-app.post('/bb/:repo', function(req, res) {
+app.post('/bb', function(req, res) {
 
 });
 
