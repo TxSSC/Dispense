@@ -1,0 +1,10 @@
+#!/bin/bash
+
+npm install
+
+if [ $? -eq 0 ]
+then
+  grunt
+else
+  exit 1
+fi
