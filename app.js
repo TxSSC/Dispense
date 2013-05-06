@@ -19,14 +19,12 @@ app.configure(function() {
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(app.router);
+  winston.add(winston.transports.File, {filename: 'builds.log'});
 });
 
-/**
- * Configure winston logging
- */
-
-winston.add(winston.transports.File, {filename: 'builds.log'});
-       //.remove(winston.transports.Console);
+app.configure('production', function() {
+  winston.remove(winston.transports.Console);
+});
 
 /**
  * Github endpoint

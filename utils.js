@@ -21,15 +21,16 @@ var utils = module.exports = exports;
  */
 
 utils.deploy = function(repo) {
+  var callback = function() {
+    return build(repo);
+  };
+
   if(fs.existsSync(path.join('./repos', repo.name))) {
-    winston.log('info', 'Updating repo ' + repo.name + ' to commit: ' + repo.commit);
-    fetch(repo.name, function() {
-      build(repo);
-    });
+    winston.log('info', 'Updating repo ' +
+      repo.name + ' to commit: ' + repo.commit.slice(0, 6));
+    fetch(repo.name, callback);
   } else {
-    clone(repo.url, function() {
-      build(repo);
-    });
+    clone(repo.url, callback);
   }
 };
 
@@ -54,22 +55,23 @@ utils.__defineGetter__('config', function() {
  */
 
 function build(repo) {
-  var conf = config.repos[repo.name],
+  var args,
+      conf = config.repos[repo.name],
       cwd = path.join('./repos', repo.name),
       script = path.resolve(path.join('./scripts', conf.type));
 
   if(fs.existsSync(script)) {
-    console.log(script);
-    exec(script, {cwd: cwd}, function(error, stdout, stderr) {
+    args = [script, config.ssh_user, conf.deploy_to, conf.directory_to_deploy];
+
+    exec(args.join(' '), {cwd: cwd}, function(error, stdout, stderr) {
       if(error) {
         winston.log('error', error.message);
       } else {
-        console.log(stdout);
-        console.log(stderr);
+        winston.log('info', repo.name + ' successfully exited deploy script');
       }
     });
   } else {
-    winston.log('error', 'Cannot build project with type ' + conf.type);
+    winston.log('error', 'Cannot deploy project with type ' + conf.type);
   }
 }
 
@@ -88,7 +90,7 @@ function clone(url, callback) {
     if(error) {
       winston.log('error', error.message);
     } else {
-      winston.log('info', 'Successfully cloned ' + ssh);
+      winston.log('info', 'Cloned ' + ssh);
       return callback();
     }
   });
@@ -108,7 +110,7 @@ function fetch(name, callback) {
     if(error) {
       winston.log('error', error.message);
     } else {
-      winston.log('info', 'Successfully pulled master of ' + name);
+      winston.log('info', 'Pulled master of ' + name);
       return callback();
     }
   });

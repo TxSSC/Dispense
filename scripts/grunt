@@ -1,10 +1,15 @@
 #!/bin/bash
 
-npm install
+set -e
 
-if [ $? -eq 0 ]
-then
-  grunt
-else
-  exit 1
-fi
+# Variables passed to deployment scripts
+user=$1
+path=$2
+directory=$3
+
+# Grunt build
+npm install
+grunt
+
+# Scp directory to path
+scp -r -i ~/.ssh/id_txssc_rsa $directory/. $user@$path
