@@ -34,7 +34,10 @@ app.configure('production', function() {
 
 app.post('/gh', function(req, res) {
   var repo, data = req.body.payload;
+
   if(!data || !data.repository) return res.send(400);
+  if(data.ref.split('/')[2] !== 'master') return res.send(403);
+
   repo = {
     name: data.repository.name,
     url: data.repository.url,
@@ -42,7 +45,7 @@ app.post('/gh', function(req, res) {
   };
 
   if(!dispense.config.repos[repo.name]) return res.send(401);
-  res.send(204); // Go ahead and fire back a 204 status
+  res.send(202); // Go ahead and fire back a 202 status
   dispense.deploy(repo);
 });
 
