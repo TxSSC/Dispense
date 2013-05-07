@@ -1,11 +1,9 @@
 {
   "logfile": "/var/log/dispense.log",
-  "ssh": {
-    "user": "mbluth"
-  },
   "repos": {
     "static-grunt-site": {
       "type": "grunt",
+      "user": "mbluth",
       "directory": "build",
       "destination": "127.0.0.1:/var/www/html/static-grunt-site"
     }

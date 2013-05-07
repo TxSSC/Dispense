@@ -24,17 +24,12 @@ git clone git@github.com:TxSSC/Dispense.git
 * absolute path to the file dispense should write logs to
 * must be writable on the filesystem, otherwise bad things will happen
 
-##### ssh - `Object`
-
-* contains ssh related settings
-* mandatory *user* - `String` key, this is the user dispense will use for ssh actions
-
 ##### repos - `Object`
 
 * contains all repositories that will be accepted by dispense
 * a repository key should contain keys `type`, the proceeding keys are dependent upon the type chosen
 
-###### type - `String`
+##### repository.type - `String`
 
 * the build script that will be executed by dispense for this repository
 * all keys other than type are passed to the build script as arguments sorted by name
