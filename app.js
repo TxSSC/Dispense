@@ -15,7 +15,7 @@ var app = express();
  */
 
 app.configure(function() {
-  app.set('port', process.env.DEPLOY_PORT || 3000);
+  app.set('port', process.env.DISPENSE_PORT || 3000);
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(app.router);
