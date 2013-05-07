@@ -6,7 +6,7 @@
 var http = require('http'),
     express = require('express'),
     winston = require('winston'),
-    dispense = require('./dispense');
+    dispense = require('./lib/dispense');
 
 var app = express();
 
