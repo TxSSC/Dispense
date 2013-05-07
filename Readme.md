@@ -1,12 +1,50 @@
-# TxSSC Deployment server
+# Dispense
 
-A git hook server that builds a release and deploys it to production.
+> A node continuous integration server using git hooks.
+
+If that didn't make sense - *this thing builds and deploys code to production.*
+
 
 ## Installation
 
+```shell
+git clone git@github.com:TxSSC/Dispense.git
+```
+
+
 ## Setup
 
-An ssh key must be present on the machine being used, since deployments could be private repositories.
+* Most build scripts must use some ssh based authentication to copy over the built project, in order automate this you must use key based ssh authentication for user dispense is running as.
+* The same ssh key should be set up on github for the same user, allowing dispense to `clone` and `pull` repositories from Github.
+
+#### `deployments.json` supports the following keys:
+
+##### logfile - `String`
+
+* absolute path to the file dispense should write logs to
+* must be writable on the filesystem, otherwise bad things will happen
+
+##### ssh - `Object`
+
+* contains ssh related settings
+* mandatory *user* - `String` key, this is the user dispense will use for ssh actions
+
+##### repos - `Object`
+
+* contains all repositories that will be accepted by dispense
+* a repository key should contain keys `type`, the proceeding keys are dependent upon the type chosen
+
+###### type - `String`
+
+* the build script that will be executed by dispense for this repository
+* all keys other than type are passed to the build script as arguments sorted by name
+
+
+## Running
+```shell
+npm install && npm start
+```
+
 
 ## License (MIT)
 Copyright (c) 2013 TxSSC
