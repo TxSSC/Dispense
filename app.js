@@ -4,9 +4,9 @@
  */
 
 var http = require('http'),
-    utils = require('./utils'),
-    express = require('express');
-    winston = require('winston');
+    express = require('express'),
+    winston = require('winston'),
+    dispense = require('./dispense');
 
 var app = express();
 
@@ -19,7 +19,9 @@ app.configure(function() {
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(app.router);
-  winston.add(winston.transports.File, {filename: 'builds.log'});
+  winston.add(winston.transports.File, {
+    filename: dispense.config.logfile || './builds.log'
+  });
 });
 
 app.configure('production', function() {
@@ -39,9 +41,9 @@ app.post('/gh', function(req, res) {
     commit: data.after
   };
 
-  if(!utils.config.repos[repo.name]) return res.send(401);
+  if(!dispense.config.repos[repo.name]) return res.send(401);
   res.send(204); // Go ahead and fire back a 204 status
-  utils.deploy(repo);
+  dispense.deploy(repo);
 });
 
 /**

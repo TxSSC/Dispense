@@ -9,10 +9,10 @@ var fs = require('fs'),
     config = require('./deployments.json');
 
 /**
- * Expose `deploy`
+ * Expose `dispense`
  */
 
-var utils = module.exports = exports;
+var dispense = module.exports = exports;
 
 /**
  * Deploy the repo source
@@ -20,7 +20,7 @@ var utils = module.exports = exports;
  * @param {Object} repo
  */
 
-utils.deploy = function(repo) {
+dispense.deploy = function(repo) {
   var callback = function() {
     return build(repo);
   };
@@ -38,7 +38,7 @@ utils.deploy = function(repo) {
  * Config getter
  */
 
-utils.__defineGetter__('config', function() {
+dispense.__defineGetter__('config', function() {
   var config = loadConfig();
 
   function loadConfig() {
