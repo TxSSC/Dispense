@@ -5,8 +5,7 @@
 var fs = require('fs'),
     path = require('path'),
     winston = require('winston'),
-    exec = require('child_process').exec,
-    config = require('./deployments.json');
+    exec = require('child_process').exec;
 
 /**
  * Expose `dispense`
@@ -55,15 +54,13 @@ dispense.__defineGetter__('config', function() {
  */
 
 function build(repo) {
-  var args,
-      conf = config.repos[repo.name],
+  var c = dispense.config.repos[repo.name],
       cwd = path.join('./repos', repo.name),
-      script = path.resolve(path.join('./scripts', conf.type));
+      args = sortArgs(c),
+      script = path.resolve(path.join('./scripts', c.type));
 
   if(fs.existsSync(script)) {
-    args = [script, config.ssh_user, conf.deploy_to, conf.directory_to_deploy];
-
-    exec(args.join(' '), {cwd: cwd}, function(error, stdout, stderr) {
+    exec(script + args.join(' '), {cwd: cwd}, function(error, stdout, stderr) {
       if(error) {
         winston.log('error', error.message);
       } else {
@@ -71,8 +68,25 @@ function build(repo) {
       }
     });
   } else {
-    winston.log('error', 'Cannot deploy project with type ' + conf.type);
+    winston.log('error', 'Cannot deploy project with type ' + c.type);
   }
+}
+
+/**
+ * Helper function for building repository arguments,
+ * returns argument values sorted in key order.
+ * Ex: `copy`: `build` would come before `directory`: `build`
+ *
+ * @param {Object} config
+ * @return {Array}
+ */
+
+function sortArgs(config) {
+  return Object.keys(config).sort().filter(function(key) {
+    return key !== 'type';
+  }).map(function(key) {
+    return config[key];
+  });
 }
 
 /**
