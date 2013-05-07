@@ -60,13 +60,14 @@ function build(repo) {
       script = path.resolve(path.join('./scripts', c.type));
 
   if(fs.existsSync(script)) {
-    exec(script + args.join(' '), {cwd: cwd}, function(error, stdout, stderr) {
-      if(error) {
-        winston.log('error', error.message);
-      } else {
-        winston.log('info', repo.name + ' successfully exited deploy script');
-      }
-    });
+    exec(script + ' ' + args.join(' '), {cwd: cwd},
+      function(error, stdout, stderr) {
+        if(error) {
+          winston.log('error', error.message);
+        } else {
+          winston.log('info', repo.name + ' successfully exited deploy script');
+        }
+      });
   } else {
     winston.log('error', 'Cannot deploy project with type ' + c.type);
   }
