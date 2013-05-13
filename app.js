@@ -6,6 +6,7 @@
 var http = require('http'),
     express = require('express'),
     winston = require('winston'),
+    utils = require('./lib/utils'),
     dispense = require('./lib/dispense');
 
 var app = express();
@@ -46,7 +47,7 @@ app.post('/gh', function(req, res) {
 
   // The user must be in the users array of the config file
   if(!dispense.config.repos[repo.name] ||
-    !~dispense.config.users.indexOf(data.repository.pusher.name)) return res.send(401);
+    !~dispense.config.users.indexOf(data.pusher.name)) return res.send(401);
   res.send(202); // Go ahead and fire back a 202 status
   dispense.deploy(repo);
 });
@@ -69,7 +70,7 @@ app.post('/bb', function(req, res) {
 
   // The user must be in the users array of the config file
   if(!dispense.config.repos[repo.name] ||
-    !~dispense.config.users.indexOf(data.repository.user)) return res.send(401);
+    !~dispense.config.users.indexOf(data.user)) return res.send(401);
   res.send(202); // Go ahead and fire back a 202 status
   dispense.deploy(repo);
 });
