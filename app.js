@@ -40,13 +40,13 @@ app.post('/gh', function(req, res) {
 
   repo = {
     name: data.repository.name,
-    url: data.repository.url,
+    url: utils.githubURL(data.repository),
     commit: data.after
   };
 
   // The user must be in the users array of the config file
   if(!dispense.config.repos[repo.name] ||
-    !~dispense.config.users.indexOf(repo.pusher.name)) return res.send(401);
+    !~dispense.config.users.indexOf(data.repository.pusher.name)) return res.send(401);
   res.send(202); // Go ahead and fire back a 202 status
   dispense.deploy(repo);
 });
@@ -56,7 +56,22 @@ app.post('/gh', function(req, res) {
  */
 
 app.post('/bb', function(req, res) {
+  var repo, data = req.body;
 
+  if(!data || !data.repository) return res.send(400);
+  if(data.commits[0].branch !== 'master') return res.send(403);
+
+  repo = {
+    name: data.repository.name,
+    url: utils.bitbucketURL(data.repository),
+    commit: data.commits[0].node
+  };
+
+  // The user must be in the users array of the config file
+  if(!dispense.config.repos[repo.name] ||
+    !~dispense.config.users.indexOf(data.repository.user)) return res.send(401);
+  res.send(202); // Go ahead and fire back a 202 status
+  dispense.deploy(repo);
 });
 
 /**
