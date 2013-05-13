@@ -46,6 +46,13 @@ npm install && npm start
 ```
 
 
+## Tell me more
+
+> The source might be a little more clear than this mediocre explanation.
+
+When the payload comes in (either a github or bitbucket post hook), the data is validated. The configuration file `config/deployments.json` is then checked to make sure this is a valid repository to deploy. Only master is used, meaning, if another branch was pushed, it will *not* be deployed. The user that made the change is then validated against the `users` configuration array. The repository is then cloned or pulled, and the corresponding script is executed on the repository.
+
+
 ## License (MIT)
 Copyright (c) 2013 TxSSC
 
