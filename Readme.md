@@ -8,7 +8,8 @@ If that didn't make sense - *this thing builds and deploys code to production.*
 ## Installation
 
 ```shell
-git clone git@github.com:TxSSC/Dispense.git
+git clone git@github.com:TxSSC/Dispense.git && cd Dispense
+mv config/deployments.example.json config/deployments.json
 ```
 
 
