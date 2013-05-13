@@ -1,4 +1,8 @@
 {
+  "users": [
+    "hsolo",
+    "lskywalker"
+  ],
   "logfile": "/var/log/dispense.log",
   "repos": {
     "static-grunt-site": {

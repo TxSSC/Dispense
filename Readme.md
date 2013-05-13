@@ -19,6 +19,10 @@ git clone git@github.com:TxSSC/Dispense.git
 
 #### `deployments.json` supports the following keys:
 
+##### users - `Array`
+
+* array that contains authorized github users that push hooks are accepted from.
+
 ##### logfile - `String`
 
 * absolute path to the file dispense should write logs to

@@ -44,7 +44,9 @@ app.post('/gh', function(req, res) {
     commit: data.after
   };
 
-  if(!dispense.config.repos[repo.name]) return res.send(401);
+  // The user must be in the users array of the config file
+  if(!dispense.config.repos[repo.name] ||
+    !~dispense.config.users.indexOf(repo.pusher.name)) return res.send(401);
   res.send(202); // Go ahead and fire back a 202 status
   dispense.deploy(repo);
 });
@@ -61,6 +63,6 @@ app.post('/bb', function(req, res) {
  * Start the server
  */
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
