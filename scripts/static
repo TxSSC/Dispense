@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+# Variables passed to deployment scripts alphabetically sorted
+destination=$1
+directory=$2
+user=$3
+
+# Scp directory to destination
+scp -r -i ~/.ssh/id_txssc_rsa $directory/. $user@$destination

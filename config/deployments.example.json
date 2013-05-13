@@ -7,9 +7,15 @@
   "repos": {
     "static-grunt-site": {
       "type": "grunt",
-      "user": "mbluth",
+      "user": "jarvis",
       "directory": "build",
       "destination": "127.0.0.1:/var/www/html/static-grunt-site"
+    },
+    "static-site": {
+      "type": "static",
+      "user": "jarvis",
+      "directory": "www",
+      "destination": "127.0.0.1:/var/www/html/static-site"
     }
   }
 }
