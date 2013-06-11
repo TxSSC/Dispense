@@ -34,7 +34,13 @@ app.configure('production', function() {
  */
 
 app.post('/gh', function(req, res) {
-  var repo, data = req.body.payload;
+  var repo, data;
+
+  try {
+    data = JSON.parse(req.body.payload);
+  } catch(e) {
+    return res.send(400);
+  }
 
   if(!data || !data.repository) return res.send(400);
   if(data.ref.split('/')[2] !== 'master') return res.send(403);
