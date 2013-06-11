@@ -8,4 +8,4 @@ directory=$2
 user=$3
 
 # Scp directory to destination
-scp -r -i ~/.ssh/id_txssc_rsa $directory/. $user@$destination
+scp -r $directory/. $user@$destination

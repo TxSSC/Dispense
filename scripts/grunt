@@ -12,4 +12,4 @@ npm install
 grunt
 
 # Scp directory to destination
-scp -r -i ~/.ssh/id_txssc_rsa $directory/. $user@$destination
+scp -r $directory/. $user@$destination
