@@ -21,7 +21,7 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(app.router);
   winston.add(winston.transports.File, {
-    filename: dispense.config.logfile || './builds.log'
+    filename: dispense.config.logfile || (__dirname + '/dispense.log')
   });
 });
 
