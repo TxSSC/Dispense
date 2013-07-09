@@ -63,7 +63,13 @@ app.post('/gh', function(req, res) {
  */
 
 app.post('/bb', function(req, res) {
-  var repo, data = req.body;
+  var repo, data;
+
+  try {
+    data = JSON.parse(req.body);
+  } catch(e) {
+    res.send(400);
+  }
 
   if(!data || !data.repository) return res.send(400);
   if(data.commits[0].branch !== 'master') return res.send(403);
