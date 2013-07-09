@@ -66,7 +66,7 @@ app.post('/bb', function(req, res) {
   var repo, data;
 
   try {
-    data = JSON.parse(req.body);
+    data = JSON.parse(req.body.payload);
   } catch(e) {
     res.send(400);
   }
