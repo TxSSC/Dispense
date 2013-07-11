@@ -8,7 +8,7 @@ directory=$2
 user=$3
 
 # Grunt build
-npm install
+npm install --silent
 grunt
 
 # Scp directory to destination
