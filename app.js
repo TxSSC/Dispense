@@ -71,8 +71,8 @@ app.post('/bb', function(req, res) {
     res.send(400);
   }
 
-  if(!data || !data.repository) return res.send(400);
-  if(data.commits[0].branch !== 'master') return res.send(403);
+  if(!data || !data.repository || !data.commits) return res.send(400);
+  if(!data.commits.length || data.commits[0].branch !== 'master') return res.send(403);
 
   repo = {
     name: data.repository.name,
